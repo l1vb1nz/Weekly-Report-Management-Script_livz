@@ -199,8 +199,10 @@ def export_txt():
 
 def gpt_generate(content):
     if api_key == 'None':
-        print(">>>没有api key,不支持接入gpt，即将跳转到错误信息")
-        return
+        print(">>>没有api key,不支持接入gpt，总结部分即将填入空字段")
+        content = ''
+        return content
+
     url = api_base
     headers = {
         "Authorization": f"Bearer {api_key}",
