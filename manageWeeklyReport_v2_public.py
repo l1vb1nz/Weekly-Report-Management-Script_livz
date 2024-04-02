@@ -44,11 +44,8 @@ def create_initiate_file():
     weekday = date.weekday() #今天是周内的第几天(0-6)
     #获取周一到周五的对象
     this_week = [0]*5
-    this_week[0] = date - timedelta(days=weekday)
-    this_week[1] = this_week[0] + timedelta(days=1)
-    this_week[2] = this_week[0] + timedelta(days=2)
-    this_week[3] = this_week[0] + timedelta(days=3)
-    this_week[4] = this_week[0] + timedelta(days=4)
+    for i in range(1,5):
+        this_week[i] = this_week[0] + timedelta(days=i)
     #修改年份
     for i in range(2,7):
         sheet[f'A{i}'] = this_week[i-2].strftime('%Y')+'年'
