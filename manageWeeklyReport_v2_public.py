@@ -1,18 +1,34 @@
 import openpyxl as pyxl
 import requests
+import json
 import shutil
 import pyfiglet
 import sys
+import os
+import configparser
 from datetime import datetime, timedelta
 
 #使用前请config
-parent_path = r'C:\Users' #此处输入模板所在目录
-template_file_name = '周报模版.xlsx' #此处输入模板文件名
-name = 'Your Name' #此处输入你的名字，生成的文件名会包含你的名字
-api_key = 'None' #此处请填入api key，若无请填None
-api_base = '' #此处请填入您的api接口地址，若无请忽视
-gpt_model = 'gpt-3.5-turbo' #此处填入您想要使用的模型，若无请忽视
+config = configparser.ConfigParser()
+#script_dir = os.path.dirname(sys.executable) 打包
+script_dir = os.getcwd() #调试
+config_path = script_dir + '\\config.txt'
+config.read(config_path,encoding='utf-8')
+config.default_section = configparser.DEFAULTSECT
 
+
+parent_path = config.get('DEFAULT', 'parent_path')
+parent_path = eval(parent_path)
+template_file_name = config.get('DEFAULT', 'template_file_name')
+template_file_name = eval(template_file_name)
+name = config.get('DEFAULT', 'name')
+name = eval(name)
+api_key = config.get('DEFAULT', 'api_key')
+api_key = eval(api_key)
+api_base = config.get('DEFAULT', 'api_base')
+api_base = eval(api_base)
+gpt_model = config.get('DEFAULT', 'gpt_model')
+gpt_model = eval(gpt_model)
 
 
 def mon_fri_str():
@@ -44,6 +60,7 @@ def create_initiate_file():
     weekday = date.weekday() #今天是周内的第几天(0-6)
     #获取周一到周五的对象
     this_week = [0]*5
+    this_week[0] = date - timedelta(days=weekday)
     for i in range(1,5):
         this_week[i] = this_week[0] + timedelta(days=i)
     #修改年份
@@ -57,7 +74,15 @@ def create_initiate_file():
 def main_page():
 
     while True:
-        title = pyfiglet.figlet_format('Livz', font='smslant')
+        title = """
+        
+.____     .__                
+|    |    |__|___  __________
+|    |    |  |\  \/ /\___   /
+|    |___ |  | \   /  /    / 
+|_______ ||__|  \_/  /_____ |
+
+        """
         print(title)
         user_choice = input('>>>欢迎来到livz周报管理系统，请输入数字：\n[1]新建并初始化本周周报文件 [2] 写入周报内容 [3]生成本周周报文字版 [4]退出： ')
         try:
@@ -192,14 +217,13 @@ def export_txt():
     with open(txt_path, 'a') as file:  
         file.write("本周工作总结\n" + content + "\n")
         file.write(f"\n下一步计划 \n {cell_Next}")
-    print(">>>导出周报文字版：成功！")
+    print(">>>导出周报文字版：完成！")
 
 def gpt_generate(content):
     if api_key == 'None':
         print(">>>没有api key,不支持接入gpt，总结部分即将填入空字段")
         content = ''
         return content
-
     url = api_base
     headers = {
         "Authorization": f"Bearer {api_key}",
@@ -215,7 +239,7 @@ def gpt_generate(content):
         ]
     }
 
-    response = requests.post(url, headers=headers, json=data)
+    response = requests.post(api_base, headers=headers, json=data)
     response_json = response.json()  # 将响应文本转换为JSON
     # 从响应JSON中提取content字段的值
     content = response_json["choices"][0]["message"]["content"]
