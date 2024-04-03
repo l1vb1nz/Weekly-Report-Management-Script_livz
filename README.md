@@ -10,3 +10,6 @@ Additionally, you can also generate your weekly report summary by accessing Open
 5. 导出txt也与注意事项（1）类似，若在存在文件的前提下导出，会对已存在的文件进行覆盖
 6. 在填入周报信息的时候请确保周报文件未被占用，否则无法成功填入
 7. 为了最好的使用体验，推荐在终端或shell运行
+
+Tips:
+如果输入后显示效果一般，可以提前修改模板的对齐模式哦~
