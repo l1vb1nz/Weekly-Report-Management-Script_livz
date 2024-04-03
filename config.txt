@@ -1,0 +1,7 @@
+[DEFAULT]
+parent_path = r'C:\Users\' #此处输入模板所在目录
+template_file_name = '周报模版.xlsx' #此处输入模板文件名
+name = 'liv' #此处输入你的名字，生成的文件名会包含你的名字
+api_key = '' #此处请填入api key，若无请填None
+api_base = "" #此处请填入您的api接口地址，若无请忽视
+gpt_model = '' #此处填入您想要使用的模型，若无请忽视
