@@ -3,6 +3,7 @@ This is a weekly report python script (specifically written for our company) tha
 Additionally, you can also generate your weekly report summary by accessing OpenAI api.
 
 version 2:
+
 注意事项：
 1. 使用前请确保配置信息正确
 2. 请把配置文件放在脚本同一目录下
